@@ -1,8 +1,8 @@
 Main.java
  Main
-MazeGrid.java
- MazeGrid
 MazeCell.java
  MazeCell
+MazeGrid.java
+ MazeGrid
 GenerateMaze.java
  GenerateMaze

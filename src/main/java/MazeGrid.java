@@ -31,18 +31,19 @@ public class MazeGrid {
             }
         }
         createGraph();
+        DFS(0);
     }
 
     private void createGraph() {
 
         for (int i = 0; i < numberOfCells; i++) {
             visited[i] = false;
-            adjacencyLists[i] = new ArrayList<>(4);
-            if ((i - numberOfRows) >= 0) {
-                adjacencyLists[i].add(i - numberOfRows);
+            adjacencyLists[i] = new ArrayList<>();
+            if ((i - numberOfColumns) >= 0) {
+                adjacencyLists[i].add(i - numberOfColumns);
             }
-            if ((i + numberOfRows) < numberOfCells) {
-                adjacencyLists[i].add(i + numberOfRows);
+            if ((i + numberOfColumns) < numberOfCells) {
+                adjacencyLists[i].add(i + numberOfColumns);
             }
             if ((i - 1) % numberOfColumns != (numberOfColumns - 1) && (i - 1) >= 0) {
                 adjacencyLists[i].add(i - 1);
@@ -51,31 +52,19 @@ public class MazeGrid {
                 adjacencyLists[i].add(i + 1);
             }
         }
-        DFS(0);
-//        for (int i = 0; i < numberOfRows; i++) {
-//            for (int j = 0; j < numberOfColumns; j++) {
-//                System.out.print(mazeMatrix[i][j].getValue() + 10 + " ");
-//            }
-//            System.out.println();
-//        }
-        for (var cell : cellOrder) {
-            System.out.println(cell);
-        }
-
     }
 
     void DFS(int v) {
         visited[v] = true;
-        cellOrder.add(mazeMatrix[v / numberOfRows][v % numberOfColumns]);
-        mazeMatrix[v / numberOfRows][v % numberOfColumns].setLine(v / numberOfRows);
-        mazeMatrix[v / numberOfRows][v % numberOfColumns].setColumn(v % numberOfColumns);
+        cellOrder.add(mazeMatrix[v / numberOfColumns][v % numberOfColumns]);
+        mazeMatrix[v / numberOfColumns][v % numberOfColumns].setLine(v / numberOfColumns);
+        mazeMatrix[v / numberOfColumns][v % numberOfColumns].setColumn(v % numberOfColumns);
         int l = 0;
         Integer[] neighbours = new Integer[4];
         Iterator<Integer> i = adjacencyLists[v].listIterator();
 
         while (i.hasNext()) {
             neighbours[l] = i.next();
-
             l++;
         }
 
@@ -85,22 +74,22 @@ public class MazeGrid {
         for (j = 0; j < l; j++) {
             if (!visited[neighbours[index]]) {
                 valueVisited++;
-                int row = (neighbours[index] / numberOfRows);
+                int row = (neighbours[index] / numberOfColumns);
                 int col = neighbours[index] % numberOfColumns;
                 if (neighbours[index] == (v + 1)) {
-                    mazeMatrix[v / numberOfRows][v % numberOfColumns].setEastWall(false);
+                    mazeMatrix[v / numberOfColumns][v % numberOfColumns].setEastWall(false);
                     mazeMatrix[row][col].setWestWall(false);
                 }
                 if (neighbours[index] == (v - 1)) {
-                    mazeMatrix[v / numberOfRows][v % numberOfColumns].setWestWall(false);
+                    mazeMatrix[v / numberOfColumns][v % numberOfColumns].setWestWall(false);
                     mazeMatrix[row][col].setEastWall(false);
                 }
-                if (neighbours[index] == (v + numberOfRows)) {
-                    mazeMatrix[v / numberOfRows][v % numberOfColumns].setSouthWall(false);
+                if (neighbours[index] == (v + numberOfColumns)) {
+                    mazeMatrix[v / numberOfColumns][v % numberOfColumns].setSouthWall(false);
                     mazeMatrix[row][col].setNorthWall(false);
                 }
-                if (neighbours[index] == (v - numberOfRows)) {
-                    mazeMatrix[v / numberOfRows][v % numberOfColumns].setNorthWall(false);
+                if (neighbours[index] == (v - numberOfColumns)) {
+                    mazeMatrix[v / numberOfColumns][v % numberOfColumns].setNorthWall(false);
                     mazeMatrix[row][col].setSouthWall(false);
                 }
                 mazeMatrix[row][col].setValue(valueVisited);

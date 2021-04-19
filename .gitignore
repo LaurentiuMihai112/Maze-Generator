@@ -1,5 +1,6 @@
 #InteliJ IDEA
 *.idea
+*.gradle
 *.iws
 *.iml
 *.ipr
@@ -15,3 +16,5 @@ out/
 *.tar.gz
 *.rar
 
+*.bin
+*.lock

@@ -13,7 +13,7 @@ public class GenerateMaze extends PApplet {
     int delayTime = 0;
 
     public void settings() {
-        size(900, 900, P3D);
+        size(900, 900, P2D);
     }
 
     public void setup() {
