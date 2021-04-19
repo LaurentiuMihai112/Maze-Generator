@@ -1,11 +1,17 @@
 #InteliJ IDEA
 *.idea
-*.gradle
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 *.iws
 *.iml
 *.ipr
 *.lock
 out/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
 # Package Files #
 *.jar
