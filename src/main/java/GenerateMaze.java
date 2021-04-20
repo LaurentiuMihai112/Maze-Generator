@@ -8,16 +8,16 @@ import java.util.Random;
 public class GenerateMaze extends PApplet {
     int currentValue = 1;
     MazeGrid mazeGrid;
-    int size = 30;
-    int offset = 0;
+    int size = 10;
+    int offset = 1;
     int delayTime = 0;
 
     public void settings() {
-        size(900, 900, P2D);
+        size(1002, 1002, P2D);
     }
 
     public void setup() {
-        mazeGrid = new MazeGrid(30, 30);
+        mazeGrid = new MazeGrid(100, 100);
         currentValue = 0;
         createGrid();
     }
