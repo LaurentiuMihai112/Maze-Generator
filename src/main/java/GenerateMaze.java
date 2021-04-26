@@ -13,11 +13,11 @@ public class GenerateMaze extends PApplet {
     int delayTime = 0;
 
     public void settings() {
-        size(1002, 1002, P2D);
+        size(3002, 1002, P2D);
     }
 
     public void setup() {
-        mazeGrid = new MazeGrid(100, 100);
+        mazeGrid = new MazeGrid(20, 300);
         currentValue = 0;
         createGrid();
     }
@@ -32,7 +32,7 @@ public class GenerateMaze extends PApplet {
         }
     }
 
-    private void solveMaze() {
+    private void createMaze() {
         int maxIndex = 0;
         for (var cell : mazeGrid.cellOrder) {
             fill(255, 255, 55);
@@ -66,7 +66,7 @@ public class GenerateMaze extends PApplet {
 
     public void draw() {
         createGrid();
-        solveMaze();
+        createMaze();
         delay(delayTime);
         currentValue++;
     }
