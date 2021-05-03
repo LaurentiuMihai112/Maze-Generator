@@ -13,12 +13,12 @@ public class GenerateMaze extends PApplet {
     boolean start;
 
     public void settings() {
-        mazeGrid = new MazeGrid(60, 60);
+        mazeGrid = new MazeGrid(100, 100);
         solution = new Solution(mazeGrid);
         startButton = new Button(912, 10, 80, 30);
         currentDrawValue = 0;
         currentSolveValue = 0;
-        size = 15;
+        size = 9;
         width = 1002;
         height = 902;
         offset = 1;
