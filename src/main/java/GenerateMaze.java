@@ -1,25 +1,25 @@
 import processing.core.PApplet;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class GenerateMaze extends PApplet {
-    int currentValue = 1;
     MazeGrid mazeGrid;
-    int size = 10;
-    int offset = 1;
-    int delayTime = 0;
+    int currentValue;
+    int size;
+    int offset;
+    int delayTime;
+    Button startButton;
+    boolean start;
 
     public void settings() {
-        size(3002, 1002, P2D);
-    }
-
-    public void setup() {
-        mazeGrid = new MazeGrid(20, 300);
+        mazeGrid = new MazeGrid(30, 30);
+        startButton = new Button(912, 10, 80, 30);
         currentValue = 0;
-        createGrid();
+        size = 30;
+        width = 1002;
+        height = 902;
+        offset = 1;
+        delayTime = 0;
+        start = false;
+        size(1002, 902, P2D);
     }
 
     public void createGrid() {
@@ -65,10 +65,34 @@ public class GenerateMaze extends PApplet {
     }
 
     public void draw() {
-        createGrid();
-        createMaze();
-        delay(delayTime);
-        currentValue++;
+        update(mouseX, mouseY);
+        if (start) {
+            createGrid();
+            createMaze();
+            delay(delayTime);
+            currentValue++;
+
+        } else {
+            fill(0);
+            rect(0, 0, 902, 902);
+        }
+        if (startButton.isHover()) {
+            fill(80);
+        } else {
+            fill(160);
+        }
+        stroke(0);
+        rect(startButton.getX(), startButton.getY(), startButton.getWidth(), startButton.getHeight());
+        fill(0);
+        if (!start) {
+            text("Start", startButton.getX() + 26, startButton.getY() + 19);
+        } else {
+            text("Stop", startButton.getX() + 26, startButton.getY() + 19);
+        }
+        if (currentValue == 901) {
+            save("F://maze.png");
+        }
+
     }
 
     public void square(int x, int y, int r) throws InterruptedException {
@@ -83,6 +107,15 @@ public class GenerateMaze extends PApplet {
         square(x - r / 2, y - r / 2, r);
         square(x + r / 2, y - r / 2, r);
         square(x - r / 2, y + r / 2, r);
+    }
+
+    void update(int x, int y) {
+
+        if (overButton(startButton.getX(), startButton.getY(), startButton.getWidth(), startButton.getHeight())) {
+            startButton.setHover(true);
+        } else {
+            startButton.setHover(false);
+        }
     }
 
     void polygon(float x, float y, float radius, int npoints) {
@@ -113,10 +146,10 @@ public class GenerateMaze extends PApplet {
             hexGrid(scale, x - 15, y + 8);
             fill(0, 110, 90);
             hexGrid(scale, x - 15, y - 9);
-        } else
-            return;
+        }
     }
-//    public void draw() {
+
+    //    public void draw() {
 //        Random random = new Random();
 //        background(0);
 //        for (Point point : points) {
@@ -141,4 +174,17 @@ public class GenerateMaze extends PApplet {
 //            sign = 1;
 //        }
 //    }
+    boolean overButton(int x, int y, int width, int height) {
+        if (mouseX >= x && mouseX <= x + startButton.getWidth() && mouseY >= y && mouseY <= y + startButton.getHeight()) {
+            return true;
+        }
+        return false;
+    }
+
+    public void mousePressed() {
+        if (startButton.isHover()) {
+            start = !start;
+        }
+
+    }
 }
