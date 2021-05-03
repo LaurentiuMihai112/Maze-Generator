@@ -2,22 +2,28 @@ import processing.core.PApplet;
 
 public class GenerateMaze extends PApplet {
     MazeGrid mazeGrid;
-    int currentValue;
+    Solution solution;
+    int currentDrawValue;
+    int currentSolveValue;
     int size;
     int offset;
     int delayTime;
+    int solveDelayTime;
     Button startButton;
     boolean start;
 
     public void settings() {
-        mazeGrid = new MazeGrid(30, 30);
+        mazeGrid = new MazeGrid(60, 60);
+        solution = new Solution(mazeGrid);
         startButton = new Button(912, 10, 80, 30);
-        currentValue = 0;
-        size = 30;
+        currentDrawValue = 0;
+        currentSolveValue = 0;
+        size = 15;
         width = 1002;
         height = 902;
         offset = 1;
         delayTime = 0;
+        solveDelayTime = 50;
         start = false;
         size(1002, 902, P2D);
     }
@@ -57,24 +63,22 @@ public class GenerateMaze extends PApplet {
 
             }
             stroke(0);
-            maxIndex++;
-            if (currentValue == maxIndex) {
+            if (currentDrawValue == maxIndex) {
                 break;
             }
+            maxIndex++;
         }
     }
 
     public void draw() {
         update(mouseX, mouseY);
         if (start) {
-            createGrid();
-            createMaze();
-            delay(delayTime);
-            currentValue++;
-
-        } else {
-            fill(0);
-            rect(0, 0, 902, 902);
+            if (currentDrawValue < mazeGrid.numberOfCells + 10) {
+                createGrid();
+                createMaze();
+                delay(delayTime);
+                currentDrawValue += max(min(mazeGrid.numberOfRows, mazeGrid.numberOfColumns) / 2, 1);
+            }
         }
         if (startButton.isHover()) {
             fill(80);
@@ -89,10 +93,52 @@ public class GenerateMaze extends PApplet {
         } else {
             text("Stop", startButton.getX() + 26, startButton.getY() + 19);
         }
-        if (currentValue == 901) {
-            save("F://maze.png");
+        if (currentDrawValue >= mazeGrid.numberOfCells + 10) {
+            solveMaze();
+            delay(solveDelayTime);
+            currentSolveValue++;
         }
+    }
 
+    void drawArrow(int cx, int cy, int len, float angle) {
+        strokeWeight(2);
+        pushMatrix();
+        translate(cx, cy);
+        rotate(radians(angle));
+        line(0, 0, len, 0);
+        line(len, 0, len / 2, -len / 2);
+        line(len, 0, len / 2, len / 2);
+        popMatrix();
+        strokeWeight(1);
+    }
+
+    private void solveMaze() {
+        int maxIndex = 0;
+        for (var cell : solution.path) {
+            fill(255, 0, 0);
+            int angle = 0;
+            try {
+                MazeCell next = solution.path.get(solution.path.indexOf(cell) + 1);
+                if (next.line > cell.line) {
+                    angle = 90;
+                } else if (next.column < cell.column) {
+                    angle = 180;
+                } else if (next.column > cell.column) {
+                    angle = 0;
+                } else if (next.line < cell.line) {
+                    angle = 270;
+                }
+                stroke(250, 0, 0);
+                drawArrow(cell.getColumn() * size + offset + size / 2, cell.getLine() * size + offset + size / 2, size / 2, angle);
+            } catch (RuntimeException e) {
+                break;
+            }
+            stroke(0);
+            if (currentSolveValue == maxIndex) {
+                break;
+            }
+            maxIndex++;
+        }
     }
 
     public void square(int x, int y, int r) throws InterruptedException {

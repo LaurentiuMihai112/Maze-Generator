@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -7,7 +6,7 @@ public class MazeGrid {
     Integer numberOfRows, numberOfColumns;
     MazeCell[][] mazeMatrix;
     Integer numberOfCells;
-    Boolean visited[];
+    Boolean[] visited;
     List<Integer>[] adjacencyLists;
     Integer valueVisited;
     List<MazeCell> cellOrder;
@@ -61,10 +60,9 @@ public class MazeGrid {
         mazeMatrix[v / numberOfColumns][v % numberOfColumns].setColumn(v % numberOfColumns);
         int l = 0;
         Integer[] neighbours = new Integer[4];
-        Iterator<Integer> i = adjacencyLists[v].listIterator();
 
-        while (i.hasNext()) {
-            neighbours[l] = i.next();
+        for (Integer i : adjacencyLists[v]) {
+            neighbours[l] = i;
             l++;
         }
 
