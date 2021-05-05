@@ -1,5 +1,7 @@
 import processing.core.PApplet;
 
+import java.awt.geom.Path2D;
+
 public class GenerateMaze extends PApplet {
     MazeGrid mazeGrid;
     Solution solution;
@@ -11,21 +13,24 @@ public class GenerateMaze extends PApplet {
     int solveDelayTime;
     Button startButton;
     boolean start;
+    boolean centered;
 
     public void settings() {
         mazeGrid = new MazeGrid(100, 100);
         solution = new Solution(mazeGrid);
-        startButton = new Button(912, 10, 80, 30);
         currentDrawValue = 0;
         currentSolveValue = 0;
-        size = 9;
-        width = 1002;
-        height = 902;
+        size = 6;
+        width = 702;
+        height = 602;
+        startButton = new Button(width-90, 10, 80, 30);
         offset = 1;
         delayTime = 0;
         solveDelayTime = 50;
         start = false;
-        size(1002, 902, P2D);
+        centered = false;
+        size(width, height, P2D);
+//        frame.setLocation(0, 0);
     }
 
     public void createGrid() {
@@ -35,6 +40,13 @@ public class GenerateMaze extends PApplet {
                 fill(1, 0, 62);
                 rect(j * size + offset, i * size + offset, size, size);
             }
+        }
+    }
+
+    void centerWindow() {
+        if (!centered) {
+            frame.setLocation(0, 0);
+            centered = true;
         }
     }
 
@@ -71,6 +83,7 @@ public class GenerateMaze extends PApplet {
     }
 
     public void draw() {
+        centerWindow();
         update(mouseX, mouseY);
         if (start) {
             if (currentDrawValue < mazeGrid.numberOfCells + 10) {
