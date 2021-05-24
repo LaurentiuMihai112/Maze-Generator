@@ -222,59 +222,13 @@ public class MazeGenerator extends PApplet {
     }
 
     void update() {
-        if (overButton(startDFSButton)) {
-            startDFSButton.setHover(true);
-        } else {
-            startDFSButton.setHover(false);
-        }
-        if (overButton(startBKTButton)) {
-            startBKTButton.setHover(true);
-        } else {
-            startBKTButton.setHover(false);
-        }
-        if (overButton(exitButton)) {
-            exitButton.setHover(true);
-        } else {
-            exitButton.setHover(false);
-        }
-    }
-
-    void polygon(float x, float y, float radius, int npoints) {
-        float angle = TWO_PI / npoints;
-        beginShape();
-        for (float a = 0; a < TWO_PI; a += angle) {
-            float sx = x + cos(a) * radius;
-            float sy = y + sin(a) * radius;
-            vertex(sx, sy);
-        }
-        endShape(CLOSE);
-    }
-
-    public void hexGrid(int scale, int x, int y) {
-        fill(180, 0, 0);
-        polygon(x, y, 10, 6);
-        if (scale != 0) {
-            scale--;
-            fill(0, 0, 90);
-            hexGrid(scale, x, y - 17);
-            fill(0, 90, 90);
-            hexGrid(scale, x, y + 17);
-            fill(90, 0, 90);
-            hexGrid(scale, x + 15, y + 8);
-            fill(190, 0, 90);
-            hexGrid(scale, x + 15, y - 9);
-            fill(160, 0, 30);
-            hexGrid(scale, x - 15, y + 8);
-            fill(0, 110, 90);
-            hexGrid(scale, x - 15, y - 9);
-        }
+        startDFSButton.setHover(overButton(startDFSButton));
+        startBKTButton.setHover(overButton(startBKTButton));
+        exitButton.setHover(overButton(exitButton));
     }
 
     boolean overButton(Button startButton) {
-        if (mouseX >= startButton.getX() && mouseX <= startButton.getX() + startButton.getWidth() && mouseY >= startButton.getY() && mouseY <= startButton.getY() + startButton.getHeight()) {
-            return true;
-        }
-        return false;
+        return mouseX >= startButton.getX() && mouseX <= startButton.getX() + startButton.getWidth() && mouseY >= startButton.getY() && mouseY <= startButton.getY() + startButton.getHeight();
     }
 
     public void mousePressed() {
