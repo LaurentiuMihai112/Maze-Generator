@@ -6,26 +6,26 @@ import processing.core.PApplet;
 import util.Button;
 import util.MazeCell;
 
-public class GenerateMaze extends PApplet {
-    MazeGrid mazeGrid1;
-    Solution solution1;
-    MazeGrid mazeGrid2;
-    Solution solution2;
-    int currentDrawValue1;
-    int currentDrawValue2;
-    int currentSolveValue1;
-    int currentSolveValue2;
-    int size;
-    int offset;
-    int delayTime;
-    int solveDelayTime;
-    Button startDFSButton;
-    Button startBKTButton;
-    Button exitButton;
-    boolean start1;
-    boolean start2;
-    boolean exit;
-    boolean centered;
+public class MazeGenerator extends PApplet {
+    private MazeGrid mazeGrid1;
+    private Solution solution1;
+    private MazeGrid mazeGrid2;
+    private Solution solution2;
+    private int currentDrawValue1;
+    private int currentDrawValue2;
+    private int currentSolveValue1;
+    private int currentSolveValue2;
+    private int size;
+    private int offset;
+    private int delayTime;
+    private int solveDelayTime;
+    private Button startDFSButton;
+    private Button startBKTButton;
+    private Button exitButton;
+    private boolean start1;
+    private boolean start2;
+    private boolean exit;
+    private boolean centered;
 
     public void settings() {
         mazeGrid1 = new MazeGrid(30, 30, 1);
@@ -102,7 +102,7 @@ public class GenerateMaze extends PApplet {
     }
 
     public void draw() {
-        if(exit){
+        if (exit) {
             System.exit(0);
         }
         centerWindow();

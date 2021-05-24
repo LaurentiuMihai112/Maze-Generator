@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.Random;
 
 public class MazeGrid {
-    Integer numberOfRows, numberOfColumns;
-    MazeCell[][] mazeMatrix;
-    Integer numberOfCells;
-    Boolean[] visited;
-    List<Integer>[] adjacencyLists;
-    Integer valueVisited;
-    List<MazeCell> cellOrder;
+    private final Integer numberOfRows;
+    private final Integer numberOfColumns;
+    private final MazeCell[][] mazeMatrix;
+    private final Integer numberOfCells;
+    private final Boolean[] visited;
+    private final List<Integer>[] adjacencyLists;
+    private Integer valueVisited;
+    private final List<MazeCell> cellOrder;
 
     public MazeGrid(Integer numberOfRows, Integer numberOfColumns, Integer algNumber) {
         this.numberOfRows = numberOfRows;
@@ -169,63 +170,19 @@ public class MazeGrid {
         return numberOfRows;
     }
 
-    public void setNumberOfRows(Integer numberOfRows) {
-        this.numberOfRows = numberOfRows;
-    }
-
     public Integer getNumberOfColumns() {
         return numberOfColumns;
-    }
-
-    public void setNumberOfColumns(Integer numberOfColumns) {
-        this.numberOfColumns = numberOfColumns;
-    }
-
-    public MazeCell[][] getMazeMatrix() {
-        return mazeMatrix;
-    }
-
-    public void setMazeMatrix(MazeCell[][] mazeMatrix) {
-        this.mazeMatrix = mazeMatrix;
     }
 
     public Integer getNumberOfCells() {
         return numberOfCells;
     }
 
-    public void setNumberOfCells(Integer numberOfCells) {
-        this.numberOfCells = numberOfCells;
-    }
-
-    public Boolean[] getVisited() {
-        return visited;
-    }
-
-    public void setVisited(Boolean[] visited) {
-        this.visited = visited;
-    }
-
-    public List<Integer>[] getAdjacencyLists() {
-        return adjacencyLists;
-    }
-
-    public void setAdjacencyLists(List<Integer>[] adjacencyLists) {
-        this.adjacencyLists = adjacencyLists;
-    }
-
-    public Integer getValueVisited() {
-        return valueVisited;
-    }
-
-    public void setValueVisited(Integer valueVisited) {
-        this.valueVisited = valueVisited;
-    }
-
     public List<MazeCell> getCellOrder() {
         return cellOrder;
     }
 
-    public void setCellOrder(List<MazeCell> cellOrder) {
-        this.cellOrder = cellOrder;
+    public MazeCell[][] getMazeMatrix() {
+        return mazeMatrix;
     }
 }
