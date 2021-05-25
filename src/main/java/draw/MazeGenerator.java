@@ -11,31 +11,17 @@ public class MazeGenerator extends PApplet {
     private Solution solution1;
     private MazeGrid mazeGrid2;
     private Solution solution2;
-    private int currentDrawValue1;
-    private int currentDrawValue2;
-    private int currentSolveValue1;
-    private int currentSolveValue2;
     private int size;
     private int offset;
-    private int delayTime;
-    private int solveDelayTime;
     private Button startDFSButton;
     private Button startBKTButton;
     private Button exitButton;
-    private boolean start1;
-    private boolean start2;
-    private boolean exit;
-    private boolean centered;
 
     public void settings() {
         mazeGrid1 = new MazeGrid(30, 30, 1);
         solution1 = new Solution(mazeGrid1);
         mazeGrid2 = new MazeGrid(30, 30, 2);
         solution2 = new Solution(mazeGrid2);
-        currentDrawValue1 = 0;
-        currentDrawValue2 = 0;
-        currentSolveValue1 = 0;
-        currentSolveValue2 = 0;
         size = 20;
         width = 702;
         height = 602;
@@ -43,12 +29,6 @@ public class MazeGenerator extends PApplet {
         startBKTButton = new Button(width - 90, 50, 80, 30);
         exitButton = new Button(width - 90, height - 40, 80, 30);
         offset = 1;
-        delayTime = 0;
-        solveDelayTime = 50;
-        start1 = false;
-        start2 = false;
-        exit = false;
-        centered = false;
         size(width, height, P2D);
     }
 
@@ -59,13 +39,6 @@ public class MazeGenerator extends PApplet {
                 fill(60, 60, 60);
                 rect(j * size + offset, i * size + offset, size, size);
             }
-        }
-    }
-
-    void centerWindow() {
-        if (!centered) {
-            frame.setLocation(0, 0);
-            centered = true;
         }
     }
 
@@ -102,47 +75,38 @@ public class MazeGenerator extends PApplet {
     }
 
     public void draw() {
-        if (exit) {
+        if (exitButton.isActivated()) {
             System.exit(0);
         }
-        centerWindow();
         update();
-        if (start1) {
-            if (currentDrawValue1 < mazeGrid1.getNumberOfCells() + 10) {
+        if (startDFSButton.isActivated()) {
+            if (mazeGrid1.getCurrentValue() < mazeGrid1.getNumberOfCells() + 10) {
                 createGrid(mazeGrid1);
-                createMaze(mazeGrid1, currentDrawValue1);
-                delay(delayTime);
-                currentDrawValue1 += 2;// max(min(mazeGrid.getNumberOfRows(), mazeGrid.getNumberOfColumns()) / 2, 1);
+                createMaze(mazeGrid1, mazeGrid1.getCurrentValue());
+                mazeGrid1.setCurrentValue(mazeGrid1.getCurrentValue() + 2);// max(min(mazeGrid.getNumberOfRows(), mazeGrid.getNumberOfColumns()) / 2, 1);
             }
-        } else if (start2) {
-            if (currentDrawValue2 < mazeGrid2.getNumberOfCells() + 10) {
+        } else if (startBKTButton.isActivated()) {
+            if (mazeGrid2.getCurrentValue() < mazeGrid2.getNumberOfCells() + 10) {
                 createGrid(mazeGrid2);
-                createMaze(mazeGrid2, currentDrawValue2);
-                delay(delayTime);
-                currentDrawValue2 += 2;// max(min(mazeGrid.getNumberOfRows(), mazeGrid.getNumberOfColumns()) / 2, 1);
+                createMaze(mazeGrid2, mazeGrid2.getCurrentValue());
+                mazeGrid2.setCurrentValue(mazeGrid2.getCurrentValue() + 2);// max(min(mazeGrid.getNumberOfRows(), mazeGrid.getNumberOfColumns()) / 2, 1);
             }
         }
         showButtons();
 
-        if (currentDrawValue1 >= mazeGrid1.getNumberOfCells() + 10) {
-            solveMaze(solution1, currentSolveValue1);
-            delay(solveDelayTime);
-            currentSolveValue1++;
-            if (currentSolveValue1 >= solution1.getPath().size()) {
-                start1 = false;
-                currentSolveValue1 = 0;
-                currentDrawValue1 = 0;
+        if (mazeGrid1.getCurrentValue() >= mazeGrid1.getNumberOfCells() + 10) {
+            solveMaze(solution1, solution1.getCurrentValue());
+            solution1.setCurrentValue(solution1.getCurrentValue() + 1);
+            if (solution1.getCurrentValue() >= solution1.getPath().size()) {
+                startDFSButton.setActivated(false);
                 mazeGrid1 = new MazeGrid(30, 30, 1);
                 solution1 = new Solution(mazeGrid1);
             }
-        } else if (currentDrawValue2 >= mazeGrid2.getNumberOfCells() + 10) {
-            solveMaze(solution2, currentSolveValue2);
-            delay(solveDelayTime);
-            currentSolveValue2++;
-            if (currentSolveValue2 >= solution2.getPath().size()) {
-                start2 = false;
-                currentSolveValue2 = 0;
-                currentDrawValue2 = 0;
+        } else if (mazeGrid2.getCurrentValue() >= mazeGrid2.getNumberOfCells() + 10) {
+            solveMaze(solution2, solution2.getCurrentValue());
+            solution2.setCurrentValue(solution2.getCurrentValue() + 1);
+            if (solution2.getCurrentValue() >= solution2.getPath().size()) {
+                startBKTButton.setActivated(false);
                 mazeGrid2 = new MazeGrid(30, 30, 2);
                 solution2 = new Solution(mazeGrid2);
             }
@@ -196,7 +160,7 @@ public class MazeGenerator extends PApplet {
         int maxIndex = 0;
         for (var cell : solution.getPath()) {
             fill(210, 30, 30);
-            int angle = 0;
+            int angle = -1;
             try {
                 MazeCell next = solution.getPath().get(solution.getPath().indexOf(cell) + 1);
                 if (next.getLine() > cell.getLine()) {
@@ -233,13 +197,13 @@ public class MazeGenerator extends PApplet {
 
     public void mousePressed() {
         if (startDFSButton.isHover()) {
-            start1 = !start1;
+            startDFSButton.setActivated(!startDFSButton.isActivated());
         }
         if (startBKTButton.isHover()) {
-            start2 = !start2;
+            startBKTButton.setActivated(!startBKTButton.isActivated());
         }
         if (exitButton.isHover()) {
-            exit = true;
+            exitButton.setActivated(true);
         }
     }
 }

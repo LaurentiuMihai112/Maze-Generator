@@ -14,12 +14,14 @@ public class Solution {
     private int startX, startY;
     private final int endX;
     private final int endY;
+    private Integer currentValue;
 
     public Solution(MazeGrid mazeGrid) {
         this.mazeGrid = mazeGrid;
         visited = new boolean[mazeGrid.getNumberOfRows()][mazeGrid.getNumberOfColumns()];
         correctPath = new boolean[mazeGrid.getNumberOfRows()][mazeGrid.getNumberOfColumns()];
         startX = startY = 0;
+        currentValue = 0;
         Random random = new Random();
         endX = random.nextInt(mazeGrid.getNumberOfRows());
         endY = mazeGrid.getNumberOfColumns() - 1;
@@ -130,5 +132,13 @@ public class Solution {
 
     public List<MazeCell> getPath() {
         return path;
+    }
+
+    public Integer getCurrentValue() {
+        return currentValue;
+    }
+
+    public void setCurrentValue(Integer currentValue) {
+        this.currentValue = currentValue;
     }
 }

@@ -6,6 +6,7 @@ public class Button {
     private final int width;
     private final int height;
     private boolean hover;
+    private boolean activated;
 
     public Button(int x, int y, int width, int height) {
         this.x = x;
@@ -13,6 +14,7 @@ public class Button {
         this.width = width;
         this.height = height;
         hover = false;
+        activated = false;
     }
 
     public int getX() {
@@ -37,5 +39,13 @@ public class Button {
 
     public void setHover(boolean hover) {
         this.hover = hover;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 }

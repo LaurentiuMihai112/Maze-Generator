@@ -15,6 +15,7 @@ public class MazeGrid {
     private final List<Integer>[] adjacencyLists;
     private Integer valueVisited;
     private final List<MazeCell> cellOrder;
+    private Integer currentValue;
 
     public MazeGrid(Integer numberOfRows, Integer numberOfColumns, Integer algNumber) {
         this.numberOfRows = numberOfRows;
@@ -25,6 +26,7 @@ public class MazeGrid {
         adjacencyLists = new ArrayList[numberOfCells];
         cellOrder = new ArrayList<>();
         valueVisited = 0;
+        currentValue = 0;
         if (algNumber == 1) {
             generateMazeDFSAlgorithm();
         } else if (algNumber == 2) {
@@ -184,5 +186,13 @@ public class MazeGrid {
 
     public MazeCell[][] getMazeMatrix() {
         return mazeMatrix;
+    }
+
+    public Integer getCurrentValue() {
+        return currentValue;
+    }
+
+    public void setCurrentValue(Integer currentValue) {
+        this.currentValue = currentValue;
     }
 }
