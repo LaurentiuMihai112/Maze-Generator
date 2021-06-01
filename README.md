@@ -14,6 +14,6 @@ Generare 2: Acest algoritm este bazat pe backtracking. El lucreaza direct pe mat
 
 Solutie: Algoritmul pentru solutie este un algoritm de timp backtracking care indiferent de algoritmul de generare folosit, plecand de la intrarea in labirint va gasi o solutie pentru acesta (algoritmii de generare prezentati anterior asigura intotdeauna existenta unei solutii).
 
-Aplicatia perminte exportul lahirinturilor in formatele (jpeg, png, tif, tga) (atat simplu cat si cu solutia acestuia). Acest lucru se realizeaza printr-un FileChooser (Swing) pentru alegerea unei locatii unde se va face exportul.
+Aplicatia perminte exportul labirinturilor in formatele (jpeg, png, tif, tga) (atat simplu cat si cu solutia acestuia). Acest lucru se realizeaza printr-un FileChooser (Swing) pentru alegerea unei locatii unde se va face exportul.
 
 Proiectul a fost testat folosit JUnit pentru sigurata ca toate celulele din labirint sunt vizitate, nu sunt eliminati toti peretii unei celule, macar unul dintre pereti este eliminat.
