@@ -13,7 +13,6 @@ public class MazeGrid {
     private final Integer numberOfCells;
     private final Boolean[] visited;
     private final List<Integer>[] adjacencyLists;
-    private Integer valueVisited;
     private final List<MazeCell> cellOrder;
     private Integer currentValue;
 
@@ -25,7 +24,6 @@ public class MazeGrid {
         visited = new Boolean[numberOfCells];
         adjacencyLists = new ArrayList[numberOfCells];
         cellOrder = new ArrayList<>();
-        valueVisited = 0;
         currentValue = 0;
         if (algNumber == 1) {
             generateMazeDFSAlgorithm();
@@ -59,12 +57,10 @@ public class MazeGrid {
 
     private int createMaze(int x, int y) {
         if (!mazeMatrix[x][y].isVisited()) {
-            valueVisited++;
             mazeMatrix[x][y].setLine(x);
             mazeMatrix[x][y].setColumn(y);
             mazeMatrix[x][y].setVisited(true);
             cellOrder.add(mazeMatrix[x][y]);
-            mazeMatrix[x][y].setValue(valueVisited);
             if (cellOrder.size() != numberOfCells) {
                 Random random = new Random();
                 int[] dx = {-1, 1, 0, 0};
@@ -139,7 +135,6 @@ public class MazeGrid {
         int j;
         for (j = 0; j < l; j++) {
             if (!visited[neighbours[index]]) {
-                valueVisited++;
                 int row = (neighbours[index] / numberOfColumns);
                 int col = neighbours[index] % numberOfColumns;
                 if (neighbours[index] == (v + 1)) {
@@ -158,9 +153,6 @@ public class MazeGrid {
                     mazeMatrix[v / numberOfColumns][v % numberOfColumns].setNorthWall(false);
                     mazeMatrix[row][col].setSouthWall(false);
                 }
-                mazeMatrix[row][col].setValue(valueVisited);
-
-
                 DFS(neighbours[index]);
             }
             index++;

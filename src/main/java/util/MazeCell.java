@@ -3,7 +3,6 @@ package util;
 public class MazeCell {
     private Boolean eastWall, westWall, northWall, southWall;
     private Integer line, column;
-    private Integer value;
     private Boolean visited = false;
 
     public MazeCell() {
@@ -11,11 +10,6 @@ public class MazeCell {
         this.westWall = true;
         this.northWall = true;
         this.southWall = true;
-        this.value = 0;
-    }
-
-    public void setValue(Integer value) {
-        this.value = value;
     }
 
     public Integer getLine() {

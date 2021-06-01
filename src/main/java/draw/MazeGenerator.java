@@ -194,7 +194,7 @@ public class MazeGenerator extends PApplet {
         text("Solve", solveButton.getX() + 27, solveButton.getY() + 19);
     }
 
-    void drawArrow(int cx, int cy, int len, float angle) {
+    void drawArrow(int cx, int cy, float len, float angle) {
         strokeWeight(2);
         pushMatrix();
         translate(cx, cy);
@@ -223,7 +223,7 @@ public class MazeGenerator extends PApplet {
                     angle = 270;
                 }
                 stroke(210, 30, 30);
-                drawArrow(cell.getColumn() * size + offset + size / 2, cell.getLine() * size + offset + size / 2, size / 2, angle);
+                drawArrow(cell.getColumn() * size + offset + size / 2, cell.getLine() * size + offset + size / 2, (float) (size / 2), angle);
             } catch (RuntimeException e) {
                 break;
             }
