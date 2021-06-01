@@ -3,8 +3,13 @@ package draw;
 import algorithms.MazeGrid;
 import algorithms.Solution;
 import processing.core.PApplet;
+import processing.core.PImage;
 import util.Button;
 import util.MazeCell;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
 
 public class MazeGenerator extends PApplet {
     private MazeGrid mazeGrid1;
@@ -13,9 +18,13 @@ public class MazeGenerator extends PApplet {
     private Solution solution2;
     private int size;
     private int offset;
+    private boolean open;
     private Button startDFSButton;
     private Button startBKTButton;
+    private Button exportButton;
+    private Button solveButton;
     private Button exitButton;
+    private PImage title;
 
     public void settings() {
         mazeGrid1 = new MazeGrid(30, 30, 1);
@@ -25,10 +34,14 @@ public class MazeGenerator extends PApplet {
         size = 20;
         width = 702;
         height = 602;
+        offset = 1;
+        open = true;
         startDFSButton = new Button(width - 90, 10, 80, 30);
         startBKTButton = new Button(width - 90, 50, 80, 30);
+        solveButton = new Button(width - 90, 90, 80, 30);
+        exportButton = new Button(width - 90, height - 80, 80, 30);
         exitButton = new Button(width - 90, height - 40, 80, 30);
-        offset = 1;
+        title = loadImage("resources/title.png");
         size(width, height, P2D);
     }
 
@@ -75,6 +88,9 @@ public class MazeGenerator extends PApplet {
     }
 
     public void draw() {
+        if (open) {
+            image(title, 0, 0, 602, 602);
+        }
         if (exitButton.isActivated()) {
             System.exit(0);
         }
@@ -92,21 +108,37 @@ public class MazeGenerator extends PApplet {
                 mazeGrid2.setCurrentValue(mazeGrid2.getCurrentValue() + 2);// max(min(mazeGrid.getNumberOfRows(), mazeGrid.getNumberOfColumns()) / 2, 1);
             }
         }
+        if (exportButton.isActivated()) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("PNG image", "png"));
+            fileChooser.setFileFilter(new FileNameExtensionFilter("JPEG image", "jpg"));
+            fileChooser.setFileFilter(new FileNameExtensionFilter("TARGA image", "tga"));
+            fileChooser.setFileFilter(new FileNameExtensionFilter("TIFF image", "tif"));
+            fileChooser.setDialogTitle("Specify a file to save to:");
+            if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                this.get(0, 0, 603, 603).save(fileToSave.getAbsolutePath());
+            }
+            exportButton.setActivated(false);
+        }
         showButtons();
 
-        if (mazeGrid1.getCurrentValue() >= mazeGrid1.getNumberOfCells() + 10) {
+        if (mazeGrid1.getCurrentValue() >= mazeGrid1.getNumberOfCells() + 10 && solveButton.isActivated()) {
             solveMaze(solution1, solution1.getCurrentValue());
             solution1.setCurrentValue(solution1.getCurrentValue() + 1);
             if (solution1.getCurrentValue() >= solution1.getPath().size()) {
                 startDFSButton.setActivated(false);
+                solveButton.setActivated(false);
                 mazeGrid1 = new MazeGrid(30, 30, 1);
                 solution1 = new Solution(mazeGrid1);
             }
-        } else if (mazeGrid2.getCurrentValue() >= mazeGrid2.getNumberOfCells() + 10) {
+        } else if (mazeGrid2.getCurrentValue() >= mazeGrid2.getNumberOfCells() + 10 && solveButton.isActivated()) {
             solveMaze(solution2, solution2.getCurrentValue());
             solution2.setCurrentValue(solution2.getCurrentValue() + 1);
             if (solution2.getCurrentValue() >= solution2.getPath().size()) {
                 startBKTButton.setActivated(false);
+                solveButton.setActivated(false);
                 mazeGrid2 = new MazeGrid(30, 30, 2);
                 solution2 = new Solution(mazeGrid2);
             }
@@ -142,6 +174,24 @@ public class MazeGenerator extends PApplet {
         rect(startDFSButton.getX(), startDFSButton.getY(), startDFSButton.getWidth(), startDFSButton.getHeight());
         fill(0);
         text("Start (DFS)", startDFSButton.getX() + 10, startDFSButton.getY() + 19);
+        if (exportButton.isHover()) {
+            fill(80);
+        } else {
+            fill(160);
+        }
+        stroke(0);
+        rect(exportButton.getX(), exportButton.getY(), exportButton.getWidth(), exportButton.getHeight());
+        fill(0);
+        text("Export", exportButton.getX() + 22, exportButton.getY() + 19);
+        if (solveButton.isHover()) {
+            fill(80);
+        } else {
+            fill(160);
+        }
+        stroke(0);
+        rect(solveButton.getX(), solveButton.getY(), solveButton.getWidth(), solveButton.getHeight());
+        fill(0);
+        text("Solve", solveButton.getX() + 27, solveButton.getY() + 19);
     }
 
     void drawArrow(int cx, int cy, int len, float angle) {
@@ -189,10 +239,12 @@ public class MazeGenerator extends PApplet {
         startDFSButton.setHover(overButton(startDFSButton));
         startBKTButton.setHover(overButton(startBKTButton));
         exitButton.setHover(overButton(exitButton));
+        exportButton.setHover(overButton(exportButton));
+        solveButton.setHover(overButton(solveButton));
     }
 
-    boolean overButton(Button startButton) {
-        return mouseX >= startButton.getX() && mouseX <= startButton.getX() + startButton.getWidth() && mouseY >= startButton.getY() && mouseY <= startButton.getY() + startButton.getHeight();
+    boolean overButton(Button button) {
+        return mouseX >= button.getX() && mouseX <= button.getX() + button.getWidth() && mouseY >= button.getY() && mouseY <= button.getY() + button.getHeight();
     }
 
     public void mousePressed() {
@@ -202,8 +254,15 @@ public class MazeGenerator extends PApplet {
         if (startBKTButton.isHover()) {
             startBKTButton.setActivated(!startBKTButton.isActivated());
         }
+        if (exportButton.isHover()) {
+            exportButton.setActivated(!exportButton.isActivated());
+        }
         if (exitButton.isHover()) {
             exitButton.setActivated(true);
         }
+        if (solveButton.isHover()) {
+            solveButton.setActivated(!solveButton.isActivated());
+        }
+        open = false;
     }
 }

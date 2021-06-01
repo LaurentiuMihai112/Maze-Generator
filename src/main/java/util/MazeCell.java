@@ -14,10 +14,6 @@ public class MazeCell {
         this.value = 0;
     }
 
-    public Integer getValue() {
-        return value;
-    }
-
     public void setValue(Integer value) {
         this.value = value;
     }
@@ -78,16 +74,4 @@ public class MazeCell {
         this.visited = visited;
     }
 
-    @Override
-    public String toString() {
-        return "util.MazeCell{" +
-                "eastWall=" + eastWall +
-                ", westWall=" + westWall +
-                ", northWall=" + northWall +
-                ", southWall=" + southWall +
-                ", line=" + line +
-                ", column=" + column +
-                ", value=" + value +
-                '}';
-    }
 }
